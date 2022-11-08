@@ -1,76 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:test/database/index.dart';
-import 'package:test/views/favourite.dart';
-import 'package:test/views/home.dart';
-import 'package:test/views/search.dart';
+import 'package:test/views/transfer.dart';
+import 'package:test/views/currency.dart';
+import 'package:test/views/Transaction.dart';
 
 class DashboardScreen extends StatefulWidget {
-  DashboardScreen({Key? key}) {
-  }
+  DashboardScreen({Key? key}) {}
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  bool changed=false;
+  bool changed = false;
   int _selectedIndex = 0;
-  String title="home";
+  String title = "home";
   final _pageController = PageController(initialPage: 0);
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
   }
+
   void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-        switch(index){
-          case 0:setState(() {
-            title="home";
-          });break;
-          case 1:setState(() {
-            title="favorite";
-          });break;
-          case 2:setState(() {
-            title="search";
-          });break;
-        }
-      });
-      _pageController.animateToPage(index, duration: const Duration(microseconds: 300),curve: Curves.easeIn);
-    }
+    setState(() {
+      _selectedIndex = index;
+      switch (index) {
+        case 0:
+          setState(() {
+            title = "Current money";
+          });
+          break;
+        case 1:
+          setState(() {
+            title = "Transfer";
+          });
+          break;
+        case 2:
+          setState(() {
+            title = "Transactions";
+          });
+          break;
+      }
+    });
+    _pageController.animateToPage(index,
+        duration: const Duration(microseconds: 300), curve: Curves.easeIn);
+  }
+
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         leading: Container(),
         title: Text(title),
       ),
-      backgroundColor:Colors.white,
+      backgroundColor: Colors.white,
       key: scaffoldKey,
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
-        children:  [
-          HomeScreen(),
-          FavouriteScreen(),
-          SearchScreen()
-        ],
+        children: [CurrencyScreen(), TransferScreen(), TransactionScreen()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.money),
+            label: 'Current money',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'favorite',
+            icon: Icon(Icons.transform),
+            label: 'Transfer',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'search',
+            icon: Icon(Icons.history),
+            label: 'Transactions',
           ),
         ],
         currentIndex: _selectedIndex,
